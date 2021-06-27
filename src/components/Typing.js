@@ -59,7 +59,7 @@ export function Typing(props) {
 
         let correct = 0
         let incorrect = 0
-        const words = input.split(" ").map(
+        input.split(" ").map(
             (item, index) => {
 
                 if (item.trim() === randomWordArr[index]) {
