@@ -35,3 +35,40 @@ button{
   bottom: 0;
   background-color: rebeccapurple;
 }
+#textArea{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-around;
+}
+#output {
+  width: 600px;
+  height: 250px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #343A40;
+  font-size: 14px;
+  font-family: monospace;
+  
+}
+#input {
+  width: 600px;
+  height: 250px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #343A40;
+  color: white;
+  font-size: 14px;
+  font-family: monospace;
+  
+}
+.notVisited{
+  color: #EF8D32;
+}
+.correct{
+  color:  #4AA96C;
+}
+.incorrect{
+  color: #F55C47;
+}

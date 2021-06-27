@@ -9,57 +9,85 @@ const rawData = ["Business meetings, and professional recordings can contain sen
     "A transcription service is a business which converts speech (either live or recorded) into a written or electronic text document. Transcription services are often provided for business, legal, or medical purposes. The most common type of transcription is from a spoken-language source into text such as a computer file suitable for printing as a document such as a report. Common examples are the proceedings of a court hearing such as a criminal trial (by a court reporter) or a physician's recorded voice notes (medical transcription)."]
 
 let randomText = rawData[Math.floor(Math.random() * rawData.length)]
-const randomTextArr = randomText.split('')
+const randomWordArr = randomText.split(" ")
+const randomCharArr = randomText.split('')
 
 export function Typing(props) {
     const [wordDetails, setWordDetails] = useState({})
     const [flag, setFlag] = useState(true)
     const [outputText, setOutputText] = useState(
-        randomTextArr.map((item, index) => {
+        randomCharArr.map((item, index) => {
             return {
-                testLetter:item,
-                status:"notVisited"
+                testLetter: item,
+                status: "notVisited"
             }
         })
     )
-    
+
 
     const handleInput = event => {
         event.preventDefault();
         let input = event.target.innerText
         const characters = input.length;
-        const words = input.split(" ").length;
         const index = characters - 1;
-
-        console.log(characters)
-
         if (input[0] === randomText[0] && flag) {
             props.isToggleTimer(true)
             setFlag(false)
         }
-        
-        let newArray = outputText.map(a => ({...a}));
-        if(input[index] === outputText[index].testLetter){
-            newArray[index].status = "correct"
+
+        let newArray = [...outputText]
+        if (characters === 0) {
+            setOutputText(
+                randomCharArr.map((item, index) => {
+                    return {
+                        testLetter: item,
+                        status: "notVisited"
+                    }
+                })
+            )
         }
-        else{
-            newArray[index].status = "incorrect"
+        else {
+            if (input[index] === outputText[index].testLetter) {
+                newArray[index].status = "correct"
+            }
+            else {
+                newArray[index].status = "incorrect"
+            }
+
+            setOutputText(newArray)
         }
 
-        setOutputText(newArray)
-        
+        let correct = 0
+        let incorrect = 0
+        const words = input.split(" ").map(
+            (item, index) => {
+
+                if (item.trim() === randomWordArr[index]) {
+                    correct++
+                }
+                else {
+                    incorrect++
+                }
+            })
+        setWordDetails({
+            correct: correct,
+            incorrect: incorrect
+        })
+
     };
 
-    // console.log(outputText);
 
     return (
         <>
             <div id="output" contentEditable={true} suppressContentEditableWarning={true}>{
-            outputText.map((letterinfo,index) => {
-                return <TestLetter key={index} letterInfo={letterinfo}/>
+                outputText.map((letterinfo, index) => {
+                    return <TestLetter key={index} letterInfo={letterinfo} />
                 })
             }</div>
-            <div id="input" contentEditable={true} onInput={handleInput}></div>
+            <div id="input" contentEditable={props.timeZero ? false : true} onInput={handleInput} onPaste={(e) =>{
+                e.preventDefault();
+                return false
+            }}></div>
 
             {props.timeZero === true && <Details wordDetails={wordDetails} time={props.timeZero} />}
         </>
