@@ -3,7 +3,7 @@
 
 ## npm install
 
-install all the dependencies in your local machine
+Install all the dependencies in your local machine
 
 ## npm start
 
